@@ -1,39 +1,49 @@
-const chatMessages = document.getElementById('chat-messages');
-const userInput = document.getElementById('user-input');
+const cvForm = document.getElementById('cv-form');
 
-function sendMessage() {
-    const message = userInput.value;
-    if (message.trim() === '') return;
+cvForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fileInput = document.getElementById('cv');
+    const file = fileInput.files[0];
 
-    // Agregar mensaje del usuario
-    addMessage(message, 'user-message');
-    
-    // Simular respuesta de la IA
-    setTimeout(() => {
-        const response = getAIResponse(message);
-        addMessage(response, 'ai-message');
-    }, 1000);
-
-    userInput.value = '';
-}
-
-function addMessage(text, className) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${className}`;
-    messageDiv.textContent = text;
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function getAIResponse(message) {
-    // Aquí puedes integrar tu modelo de IA
-    // Por ahora, solo devolvemos una respuesta simple
-    return `Respuesta a: ${message}`;
-}
-
-// Permitir enviar mensaje con Enter
-userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage();
+    if (file && (file.type === 'application/pdf' || file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+        alert('Gracias por enviar tu currículum. Nos pondremos en contacto contigo pronto.');
+        cvForm.reset();
+    } else {
+        alert('Por favor, sube un archivo válido (PDF o Word).');
     }
+});
+
+const heroImages = document.querySelectorAll('.hero-image');
+let currentImageIndex = 0;
+
+function changeBackgroundImage() {
+
+    heroImages[currentImageIndex].classList.remove('active');
+
+
+    currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+
+
+    heroImages[currentImageIndex].classList.add('active');
+}
+
+setInterval(changeBackgroundImage, 5000);
+
+const header = document.querySelector('header');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) { 
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+const aboutTitles = document.querySelectorAll('.about-title');
+
+aboutTitles.forEach(title => {
+    title.addEventListener('click', () => {
+        const aboutItem = title.parentElement; 
+        aboutItem.classList.toggle('active'); 
+    });
 });
